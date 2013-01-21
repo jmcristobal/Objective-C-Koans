@@ -15,7 +15,9 @@
 @class Person;
 @class PhoneNumber;
 
-@interface Person : NSObject 
+@interface Person : NSObject
+
+@property (nonatomic, strong) PhoneNumber *phoneNumber;
 // Example : create the property thingy with 'strong' ARC property
 //
 // ARC Notes : http://www.mikeash.com/pyblog/friday-qa-2011-09-30-automatic-reference-counting.html
@@ -28,8 +30,40 @@
 @interface PhoneNumber : NSObject
   // We would explicitly tell the ARC system that we want a weak reference to Person
   // ie: don't keep the Person around if it's only retained reference is weak
-  @property (nonatomic, weak) Person *owner;
+@property (nonatomic, strong) Person *owner;
+@property(nonatomic,strong) NSString *countryCode, *areaCode, *digits;
+
+-(id)initWithCountryCode:(NSString*)countryCode areaCode:(NSString*)areaCode digits:(NSString*)digits;
+
 @end
+
+@implementation Person
+@synthesize phoneNumber = _phoneNumber;
+
+-(void)setPhoneNumber:(PhoneNumber *)phoneNumber{
+	_phoneNumber = phoneNumber;
+	phoneNumber.owner = self;
+}
+
+@end;
+
+@implementation PhoneNumber
+
+@synthesize owner = _owner;
+@synthesize countryCode = _countryCode;
+@synthesize areaCode = _areaCode;
+@synthesize digits = _digits;
+
+-(id)initWithCountryCode:(NSString *)countryCode areaCode:(NSString *)areaCode digits:(NSString *)digits{
+	PhoneNumber *result = [PhoneNumber alloc];
+	result.countryCode = countryCode;
+	result.areaCode = areaCode;
+	result.digits = digits;
+	return result;
+}
+
+@end;
+
 
 #import "Kiwi.h"
 SPEC_BEGIN(AboutARC)
