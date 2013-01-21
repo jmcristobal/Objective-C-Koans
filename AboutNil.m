@@ -13,7 +13,7 @@ SPEC_BEGIN(AboutNil)
 describe(@"nil", ^{
   
   it(@"evaluates to false in conditionals", ^{
-    [[NSObject shouldNot] receive:@selector(description)];    
+    [[NSObject should] receive:@selector(description)];
     id panda = [NSObject new];
     if(panda){
       [NSObject description];
@@ -24,7 +24,7 @@ describe(@"nil", ^{
     [[theBlock(^{
       id panda = nil;
       [panda description];
-    }) should] raise];
+    }) shouldNot] raise];
   });
   
 });
